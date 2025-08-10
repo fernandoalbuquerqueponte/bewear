@@ -4,6 +4,7 @@ import Image from "next/image";
 import CategorySelector from "@/components/common/category-selector";
 import Footer from "@/components/common/footer";
 import Header from "@/components/common/header";
+import PartnerCompanies from "@/components/common/partner-companies";
 import ProductList from "@/components/common/product-list";
 import { db } from "@/db";
 import { productTable } from "@/db/schema";
@@ -39,12 +40,12 @@ const Home = async () => {
           />
         </div>
 
-        <ProductList products={products} title="Mais vendidos" />
+        <PartnerCompanies />
 
+        <ProductList products={products} title="Mais vendidos" />
         <div className="px-5">
           <CategorySelector categories={categories} />
         </div>
-
         <div className="px-5">
           <Image
             src="/banner-02.png"
@@ -55,7 +56,6 @@ const Home = async () => {
             className="h-auto w-full"
           />
         </div>
-
         <ProductList products={newlyCreatedProducts} title="Novos produtos" />
         <Footer />
       </div>
