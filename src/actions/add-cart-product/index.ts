@@ -9,7 +9,7 @@ import { auth } from "@/lib/auth";
 
 import { type AddProductToCartSchema, addProductToCartSchema } from "./schema";
 
-export const addCartToCart = async (data: AddProductToCartSchema) => {
+export const addProductToCart = async (data: AddProductToCartSchema) => {
   addProductToCartSchema.parse(data);
 
   const session = await auth.api.getSession({
@@ -20,7 +20,7 @@ export const addCartToCart = async (data: AddProductToCartSchema) => {
     throw new Error("Unauthorized");
   }
 
-  const productVariant = await db.query.productTable.findFirst({
+  const productVariant = await db.query.productVariantTable.findFirst({
     where: (productVariant, { eq }) =>
       eq(productVariant.id, data.productVariantId),
   });

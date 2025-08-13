@@ -25,7 +25,7 @@ const Header = () => {
       <Link href="/">
         <Image src={"/logo.svg"} alt="Bewear Logo" width={100} height={26.14} />
       </Link>
-      <div className="flex items-center">
+      <div className="flex items-center gap-4">
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon">
