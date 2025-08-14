@@ -3,6 +3,7 @@ import { MinusIcon, PlusIcon, TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
 
+import { addProductToCart } from "@/actions/add-cart-product";
 import { decreaseCartProductQuantity } from "@/actions/decrease-cart-product-quantity.ts";
 import { removeProductFromCart } from "@/actions/remove-cart-product";
 import { formatCentsToBRL } from "@/helpers/currency";
@@ -12,6 +13,7 @@ import { Button } from "../ui/button";
 interface CartItemProps {
   id: string;
   productName: string;
+  productVariantId: string;
   productVariantName: string;
   productVariantImageUrl: string;
   productVariantPriceInCents: number;
@@ -21,6 +23,7 @@ interface CartItemProps {
 const CartItem = ({
   id,
   productName,
+  productVariantId,
   productVariantImageUrl,
   productVariantName,
   productVariantPriceInCents,
@@ -39,6 +42,17 @@ const CartItem = ({
     },
   });
 
+  const increaseCartProductQuantityMutation = useMutation({
+    mutationKey: ["increase-cart-product-quantity"],
+    mutationFn: () =>
+      addProductToCart({
+        productVariantId,
+        quantity: 1,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
   const decreaseCartProductQuantityMutation = useMutation({
     mutationKey: ["decrease-cart-product-quantity"],
     mutationFn: () =>
@@ -72,6 +86,17 @@ const CartItem = ({
     });
   };
 
+  const handleIncreaseQuantityClick = () => {
+    increaseCartProductQuantityMutation.mutate(undefined, {
+      onSuccess: () => {
+        toast.success("Quantidade do produto aumentada.");
+      },
+      onError: () => {
+        toast.error("Erro ao aumentar quantidade do produto.");
+      },
+    });
+  };
+
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
@@ -98,7 +123,11 @@ const CartItem = ({
               <MinusIcon size={12} />
             </Button>
             <p className="text-xs font-medium">{quantity}</p>
-            <Button variant="ghost" className="h-4 w-4" onClick={() => {}}>
+            <Button
+              variant="ghost"
+              className="h-4 w-4"
+              onClick={handleIncreaseQuantityClick}
+            >
               <PlusIcon size={12} />
             </Button>
           </div>

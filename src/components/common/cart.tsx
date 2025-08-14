@@ -39,10 +39,16 @@ export const Cart = () => {
           <div className="flex h-full max-h-full flex-col overflow-hidden">
             <ScrollArea className="h-full">
               <div className="flex h-full flex-col gap-8">
+                {cartIsLoading && (
+                  <div>
+                    <p>Carregando...</p>
+                  </div>
+                )}
                 {cart?.items.map((item) => (
                   <CartItem
                     key={item.id}
                     id={item.id}
+                    productVariantId={item.productVariant.id}
                     productName={item.productVariant.product.name}
                     productVariantName={item.productVariant.name}
                     productVariantImageUrl={item.productVariant.imageUrl}
